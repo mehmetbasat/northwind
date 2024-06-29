@@ -1,6 +1,10 @@
 package kodlama.io.northwind.business.concretes;
 
 import kodlama.io.northwind.business.abstracts.ProductService;
+import kodlama.io.northwind.core.utilities.results.DataResult;
+import kodlama.io.northwind.core.utilities.results.Result;
+import kodlama.io.northwind.core.utilities.results.SuccessDataResult;
+import kodlama.io.northwind.core.utilities.results.SuccessResult;
 import kodlama.io.northwind.dataAccess.abstracts.ProductDao;
 import kodlama.io.northwind.entities.concretes.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +23,17 @@ public class ProductManager implements ProductService {
     }
 
     @Override
-    public List<Product> getAll() {
-        return productDao.findAll();
+    public DataResult<List<Product>> getAll() {
+        return new SuccessDataResult<List<Product>>
+                (this.productDao.findAll(), "Data Listed");
+
+
+
+    }
+
+    @Override
+    public Result add(Product product) {
+        productDao.save(product);
+        return new SuccessResult("Product added");
     }
 }
